@@ -14,7 +14,7 @@ from IPython.core.magic import (
     no_var_expand,
 )
 from IPython.display import HTML, Code, clear_output, display
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOllama
 
 from .core import CoMLAgent
 from .ipython_utils import (
@@ -83,9 +83,18 @@ class CoMLMagics(Magics):
         super().__init__(*args, **kwargs)
 
         import dotenv
+        import os
 
         dotenv.load_dotenv()
-        llm = ChatOpenAI(temperature=0.0, model="gpt-3.5-turbo-16k")
+        headers = {
+            "Authorization": f"Bearer {os.getenv('OLLAMA_API_KEY')}"
+        }
+        llm = ChatOllama(
+            temperature=0.0,
+            headers=headers,
+            model=os.getenv("OLLAMA_MODEL"),
+            base_url=os.getenv("OLLAMA_API_BASE_URL")
+        )
         self.agent = CoMLAgent(llm)
 
     def _get_variable_context(self) -> dict[str, Any]:

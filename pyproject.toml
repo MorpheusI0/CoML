@@ -9,6 +9,7 @@ dependencies = [
   "click",
   "colorama",
   "langchain",
+  "langchain_community",
   "numpy",
   "orjson",
   "pandas",

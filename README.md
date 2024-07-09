@@ -1,4 +1,4 @@
-# CoML
+# CoML (Ollama)
 
 CoML (formerly MLCopilot) is an interactive coding assistant for data scientists and machine learning developers, empowered on large language models.
 
@@ -20,7 +20,10 @@ pip install mlcopilot
 
 We recommend trying CoML in a Jupyter Lab environment. Before using CoML, please make sure that:
 
-1. You have exported `OPENAI_API_KEY=sk-xxxx` in your environment. Alternatively, you can also use a `.env` file.
+1. You have exported the following variables in your environment (alternatively, you can also use a `.env` file):
+   - `OLLAMA_API_KEY=sk-xxxx`,
+   - `OLLAMA_API_BASE_URL=https://your-host:8080` and 
+   - `OLLAMA_MODEL=llama3:70b`
 2. Use `%load_ext coml` in your notebook to active CoML extension.
 
 Then we have provided several commands to assist your journey with interactive coding in Jupyter Lab.
