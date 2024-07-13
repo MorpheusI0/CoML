@@ -255,7 +255,7 @@ class CoMLAgent:
     def _generate(self, messages: list[BaseMessage]) -> BaseMessage:
         """Generate a response from the LLM."""
         messages = self._pre_generation(messages)
-        return self.llm(messages)
+        return self.llm.invoke(messages)
 
     def _select_examples(self, query: str, fewshots: list[_Type]) -> list[_Type]:
         """Select examples from the fewshots."""
