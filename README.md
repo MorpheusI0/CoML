@@ -47,7 +47,7 @@ Then we have provided several commands to assist your journey with interactive c
 
 ## CoML Config Agent
 
-CoML config agent is the implementation of [MLCopilot]((https://arxiv.org/abs/2304.14979)), which can suggest a ML configuration within a specific task, for a specific task. Currently, it is an independent component residing in `coml.configagent`. In the future, we will integrate it into the CoML system.
+CoML config agent is the implementation of [MLCopilot](https://arxiv.org/abs/2304.14979), which can suggest a ML configuration within a specific task, for a specific task. Currently, it is an independent component residing in `coml.configagent`. In the future, we will integrate it into the CoML system.
 
 ![](assets/demo.gif)
 

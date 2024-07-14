@@ -61,7 +61,7 @@ def gen_knowledge_candidate(examples: List[str]) -> str:
         input_variables=[],
     )
     llm = get_llm("knowledge")()
-    knowledge = "\n1." + llm(dynamic_prompt.format())
+    knowledge = "\n1." + llm.invoke(dynamic_prompt.format())
     return knowledge
 
 

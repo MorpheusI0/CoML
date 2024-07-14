@@ -102,13 +102,17 @@ def init_db():
 
         @database_proxy.func()
         def cosine_similarity(task_emb: BlobField, text: str) -> float:
-            emb = np.frombuffer(task_emb, dtype=np.float32)
-            if text not in _cache:
-                _cache[text] = np.asarray(
-                    get_llm("embedding")().embed_query(text), dtype=np.float32
-                )
-            text_emb = _cache[text]
-            return np.dot(emb, text_emb).item()
+            try:
+                emb = np.frombuffer(task_emb, dtype=np.float32)
+                if text not in _cache:
+                    _cache[text] = np.asarray(
+                        get_llm("embedding")().embed_query(text), dtype=np.float32
+                    )
+                text_emb = _cache[text]
+                return np.dot(emb, text_emb).item()
+            except Exception as e:
+                print(f"Error in cosine_similarity: {e}")
+                return 0.0
 
 
 class BaseModel(Model):

@@ -8,6 +8,10 @@ __all__ = [
     "bin_map",
     "inverse_bin_map",
     "q_num",
+    "COML_LLM",
+    "OLLAMA_API_KEY",
+    "OLLAMA_API_BASE_URL",
+    "OLLAMA_MODEL",
     "COML_DB_BACKEND",
     "COML_DB_NAME",
     "COML_DB_HOST",
@@ -27,6 +31,12 @@ EMBED_DIM = 1536
 TOKEN_LIMIT = 4096
 TOKEN_COMPLETION_LIMIT = 800
 RELAX_TOKEN = 500  # RELAX_TOKEN is the number of tokens to void token limit
+
+COML_LLM = os.environ.get("COML_LLM", "Ollama")
+
+OLLAMA_API_KEY = os.environ.get("OLLAMA_API_KEY")
+OLLAMA_API_BASE_URL = os.environ.get("OLLAMA_API_BASE_URL")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL")
 
 COML_DB_BACKEND = os.environ.get("COML_DB_BACKEND", "sqlite")
 

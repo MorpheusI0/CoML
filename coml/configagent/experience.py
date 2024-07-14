@@ -7,8 +7,8 @@ import langchain
 import numpy as np
 import orjson
 import pandas as pd
-from langchain.cache import InMemoryCache
-from peewee import ModelSelect, fn
+from langchain_community.cache import InMemoryCache
+from peewee import ModelSelect, fn, OperationalError
 
 from .constants import *
 from .orm import Knowledge, Solution, Space, Task, database_proxy
@@ -421,10 +421,14 @@ def gen_experience(
         query = _get_best_relevant_solutions(space, task_desc)
     examples = OrderedDict()
 
-    for solution in query:
-        if solution.task_id not in examples:
-            examples[solution.task_id] = [solution.desc]
-        examples[solution.task_id].append(
-            f"Configuration {len(examples[solution.task_id])}: {solution.demo}"
-        )
+    try:
+        for solution in query:
+            if solution.task_id not in examples:
+                examples[solution.task_id] = [solution.desc]
+            examples[solution.task_id].append(
+                f"Configuration {len(examples[solution.task_id])}: {solution.demo}"
+            )
+    except OperationalError as e:
+        print(f"OperationalError: {e}")
+
     return list(examples.keys()), ["\n".join(e) for e in examples.values()]

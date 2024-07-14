@@ -490,7 +490,7 @@ def get_order(llm: BaseChatModel, request: str):
 
     messages.append(HumanMessage(content=request))
 
-    response = llm(messages)
+    response = llm.invoke(messages)
     try:
         answer = parse_answer(response.content)
         if answer == "None":
@@ -695,7 +695,7 @@ class VisVerifier:
                     content=f"Visualization Goal:{request}\nDataset Description:{json.dumps(variable_descriptions)}\nChart Description:{chart}"
                 )
             )
-            response = self.llm(messages)
+            response = self.llm.invoke(messages)
             verifications = eval(response.content)
 
             for verification in verifications:

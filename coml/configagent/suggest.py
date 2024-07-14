@@ -4,7 +4,7 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import orjson
-from langchain import FewShotPromptTemplate, PromptTemplate
+from langchain_core.prompts import FewShotPromptTemplate, PromptTemplate
 from langchain.prompts.example_selector import LengthBasedExampleSelector
 from peewee import fn
 
@@ -130,7 +130,7 @@ def suggest(space: Space, task_desc: str) -> Tuple[Any, Union[str, None]]:
     )
     prompt = dynamic_prompt.format()
 
-    response = llm(prompt)
+    response = llm.invoke(prompt)
     if quantile_infos:
         suggest_configs = parse_configs(
             response,

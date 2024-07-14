@@ -4,16 +4,43 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.llms import OpenAI
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.llms import OpenAI
+from langchain_community.llms import Ollama
+from langchain_community.embeddings.ollama import OllamaEmbeddings
 
 from .constants import *
 
-LLM_MODELS = {
-    "suggest": lambda: OpenAI(model_name="text-davinci-003", temperature=0),
-    "knowledge": lambda: OpenAI(model_name="text-davinci-003"),
-    "embedding": lambda: OpenAIEmbeddings(),
-}
+if COML_LLM == "OpenAI":
+    LLM_MODELS = {
+        "suggest": lambda: OpenAI(model_name="text-davinci-003", temperature=0),
+        "knowledge": lambda: OpenAI(model_name="text-davinci-003"),
+        "embedding": lambda: OpenAIEmbeddings(),
+    }
+elif COML_LLM == "Ollama":
+    ollama_headers = {
+                "Authorization": f"Bearer {OLLAMA_API_KEY}"
+            }
+    LLM_MODELS = {
+        "suggest": lambda: Ollama(
+            headers=ollama_headers,
+            base_url=OLLAMA_API_BASE_URL,
+            model=OLLAMA_MODEL,
+            temperature=0
+        ),
+        "knowledge": lambda: Ollama(
+            headers=ollama_headers,
+            base_url=OLLAMA_API_BASE_URL,
+            model=OLLAMA_MODEL
+        ),
+        "embedding": lambda: OllamaEmbeddings(
+            headers=ollama_headers,
+            base_url=OLLAMA_API_BASE_URL,
+            model=OLLAMA_MODEL
+        ),
+    }
+else:
+    raise ValueError(f"Unknown LLM: {COML_LLM}")
 _TOKEN_COUNT_FUNC = None
 
 
