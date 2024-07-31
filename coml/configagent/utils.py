@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.llms import OpenAI
+from langchain_openai.llms import OpenAI
 from langchain_community.llms import Ollama
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 
@@ -13,8 +13,8 @@ from .constants import *
 
 if COML_LLM == "OpenAI":
     LLM_MODELS = {
-        "suggest": lambda: OpenAI(model_name="text-davinci-003", temperature=0),
-        "knowledge": lambda: OpenAI(model_name="text-davinci-003"),
+        "suggest": lambda: OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0),
+        "knowledge": lambda: OpenAI(model_name="gpt-3.5-turbo-instruct"),
         "embedding": lambda: OpenAIEmbeddings(),
     }
 elif COML_LLM == "Ollama":

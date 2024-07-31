@@ -129,7 +129,7 @@ def suggest_with_knowledge(
 
     llm = get_llm("suggest")()
 
-    response = llm(
+    response = llm.invoke(
         dynamic_prompt.format(
             knowledge=knowledge,
             TOP_K=str(TOP_K),
