@@ -34,7 +34,8 @@ def gen_knowledge_candidate(examples: List[str]) -> str:
         "Here are some tasks along with best hyper-parameter configurations to train a model on them.\n"
     )
     suffix_token = get_token_count_func()(
-        "\nQ: From the examples above, what patterns can we observe about the relationship between dataset characteristics and the best hyper-parameter configurations? (Answer MUST be concise, critical, point-by-point, line-by-line, and brief. Only include relevant observations without unnecessary elaboration.)\n\nA: 1."
+        #"\nQ: From the examples above, what patterns can we observe about the relationship between dataset characteristics and the best hyper-parameter configurations? (Answer MUST be concise, critical, point-by-point, line-by-line, and brief. Only include relevant observations without unnecessary elaboration.)\n\nA: 1."
+        "\nQ: From the examples above, what patterns can we observe about the relationship between dataset characteristics and the best hyper-parameter configurations? (Answer MUST be concise, critical and brief. Only include relevant observations without unnecessary elaboration and in numbered bullet points ONLY. Do not include any introduction or conclusion. Only provide the numbered observations in the following format:\n1. observation\n2. observation\n...)\n\nA: 1."
     )
     example_prompt = PromptTemplate(
         input_variables=["input"],
@@ -57,11 +58,11 @@ def gen_knowledge_candidate(examples: List[str]) -> str:
         example_selector=example_selector,
         example_prompt=example_prompt,
         prefix="Here are some tasks along with best hyper-parameter configurations to train a model on them.\n",
-        suffix="\nQ: From the examples above, what patterns can we observe about the relationship between dataset characteristics and the best hyper-parameter configurations? (Answer MUST be concise, critical, point-by-point, line-by-line, and brief. Only include relevant observations without unnecessary elaboration.)\n\nA: 1.",
+        suffix="\nQ: From the examples above, what patterns can we observe about the relationship between dataset characteristics and the best hyper-parameter configurations? (Answer MUST be concise, critical and brief. Only include relevant observations without unnecessary elaboration and in numbered bullet points ONLY. Do not include any introduction or conclusion. Only provide the numbered observations in the following format:\n1. observation\n2. observation\n...)\n\nA: 1.",
         input_variables=[],
     )
     llm = get_llm("knowledge")()
-    knowledge = "\n1." + llm.invoke(dynamic_prompt.format())
+    knowledge = "\n" + llm.invoke(dynamic_prompt.format())
     return knowledge
 
 
@@ -94,7 +95,7 @@ def suggest_with_knowledge(
         "Here are some tasks along with best hyper-parameter configurations to train a model on them.\n"
     )
     suffix_token = get_token_count_func()(
-        "\nGuidelines:{knowledge}\n\n\nBased on the examples and guidelines above, recommend {TOP_K} hyper-parameter configurations for a new classification dataset.\n\n{output}".format(
+        "\nGuidelines:{knowledge}\n\n\nBased on the examples and guidelines above, recommend {TOP_K} hyper-parameter configurations for a new classification dataset DS in the same format as given above. Do not include any introduction or conclusion.\n\nDS: {output}".format(
             knowledge=knowledge,
             TOP_K=str(TOP_K),
             output=(
@@ -123,7 +124,7 @@ def suggest_with_knowledge(
         example_selector=example_selector,
         example_prompt=example_prompt,
         prefix="Here are some tasks along with best hyper-parameter configurations to train a model on them.\n",
-        suffix="\nGuidelines:{knowledge}\n\n\nBased on the examples and guidelines above, recommend {TOP_K} hyper-parameter configurations for a new classification dataset.\n\n{output}",
+        suffix="\nGuidelines:{knowledge}\n\n\nBased on the examples and guidelines above, recommend {TOP_K} hyper-parameter configurations for a new classification dataset DS in the same format as given above. Do not include any introduction or conclusion.\n\nDS: {output}",
         input_variables=["knowledge", "TOP_K", "output"],
     )
 
